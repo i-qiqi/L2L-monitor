@@ -64,7 +64,6 @@ var pathSimplifierIns4Route;
 var map;  //地图实例
 var port32;  //使用中的港口，icon类
 var uselessPort32;   //未使用中的港口，icon类
-var portMarkers = []; //港口点标记集合，Marker类集合
 var vids = {};
 var port = [];
 var target;// 目标港口是第一个
@@ -312,6 +311,7 @@ App.service('MapService', function (MapFactory, $http, Session, VesselProcessSer
                 searchTimeData.push(path.steps[i].duration);
                 searchSpeedData.push(path.steps[i].distance / path.steps[i].duration * 3.6 * ZoomInVal);
             }
+            //extract poly line
             for (var i = 0; i < tempPathData.length; i++) {
                 var tempString = tempPathData[i].split(';');
                 searchPathData[i] = [];
@@ -365,40 +365,7 @@ App.service('MapService', function (MapFactory, $http, Session, VesselProcessSer
             // totalTime += searchTimeData[index];
             //flag是是否做路程扩展的判断标志
             var expandPath = function () {
-                var doExpand = function () {
-                    index++;
-                    esTime=MapFactory.setTraffic(pathSimplifierIns, searchTimeData, searchSpeedData, esTime, index);
-                    if (esTime > eEnd) {
-                        if (gpTimer !== null) {
-                            $interval.cancel(gpTimer);
-                        }
-                        navg1.stop();
-                        $.toaster('时间不充足,需要重新规划路径!', 'Warning', 'warning');
-                        var data2VWC = {
-                            'msgType': "msg_UpdateDest",
-                            'V_pid': event.data.V_pid,
-                            'W_pid': event.data.W_Info.value.pid
-                        };
-                        $http.post(activityBasepath + "/coord/messages/Msg_StartVWC", data2VWC)
-                            .success(function (data) {
-                                console.log("执行重新规划");
-                            });
-                        return false;
-                    }
-                    pathSimplifierIns4Route.setData([{
-                        name: '总路线',
-                        path: pathData.slice(0)
-                    }]);
-                    NavigationData[0].path = searchPathData[index].slice(0);
-                    pathSimplifierIns.setData(NavigationData);
-                    navg1 = pathSimplifierIns.createPathNavigator(0, {
-                        loop: false,
-                    });
-                    navg1.setSpeed(searchSpeedData[index]);
-                    navg1.start();
-                    // totalTime += searchTimeData[index];
-                    return true;
-                };
+
 
                 if (navg1.getNaviStatus().toString() === 'pause' && navg1.isCursorAtPathEnd()) {
                     if (index + 1 > searchPathData.length - 1) {

@@ -116,77 +116,148 @@ function initMap() {
                         });
                 }
             },
-            timeout: 10000
+            timeout: 15000
         }
     });
 };
 
+function setManager(title, position) {
+    return new AMap.Marker({
+        map: map,
+        icon: new AMap.Icon({
+            image: "images/manager32.png",
+            size: new AMap.Size(64, 64)
+        }),
+        position: position,
+        title: title
+    });
+}
+function setSupplier(title, position) {
+    return new AMap.Marker({
+        map: map,
+        icon: new AMap.Icon({
+            image: "images/supplier32.png",
+            size: new AMap.Size(64, 64)
+        }),
+        position: position,
+        title: title
+    });
+}
+/**
+ * load PathSimplifier
+ */
+function loadWagonSimulator(wagonManager, idx) {
+    //加载PathSimplifier，loadUI的路径参数为模块名中 'ui/' 之后的部分
+    // var pathSimplifierIns = {};
+    wagonManager.pathSimplifierIns = createPathSimplifierIns();
+    wagonManager.pathSimplifierIns.setData(wagonManager.pathDatas);
+    wagonManager.navigator = createNavigator(wagonManager.pathSimplifierIns, idx , wagonManager.speed);
+}
 
-// var navg1 = {};
-// AMapUI.load(['ui/misc/PathSimplifier'], function(PathSimplifier) {
-//
-//     if (!PathSimplifier.supportCanvas) {
-//         alert('当前环境不支持 Canvas！');
-//         return;
-//     }
-//
-//     //启动页面
-//     initPage2(PathSimplifier);
-//     navg1.start();
-// });
-// function initPage2(PathSimplifier) {
-//     //创建组件实例
-//     var pathSimplifierIns = new PathSimplifier({
-//         zIndex: 100,
-//         autoSetFitView : false,
-//         map: map, //所属的地图实例
-//         getPath: function(pathData, pathIndex) {
-//             //返回轨迹数据中的节点坐标信息，[AMap.LngLat, AMap.LngLat...] 或者 [[lng|number,lat|number],...]
-//             return pathData.path;
-//         },
-//         getHoverTitle: function(pathData, pathIndex, pointIndex) {
-//             //返回鼠标悬停时显示的信息
-//             if (pointIndex >= 0) {
-//                 //鼠标悬停在某个轨迹节点上
-//                 return pathData.name + '，点:' + pointIndex + '/' + pathData.path.length;
-//             }
-//             //鼠标悬停在节点之间的连线上
-//             return pathData.name + '，点数量' + pathData.path.length;
-//         },
-//         renderOptions: {
-//             //轨迹线的样式
-//             pathLineStyle: {
-//                 strokeStyle: '#c61dcc',
-//                 lineWidth: 6,
-//                 dirArrowStyle: true
-//             }
-//         }
-//     });
-//
-//     //这里构建两条简单的轨迹，仅作示例
-//     pathSimplifierIns.setData([{
-//         name: '大地线',
-//         //创建一条包括500个插值点的大地线
-//         path: PathSimplifier.getGeodesicPath([116.405289, 39.904987], [87.61792, 43.793308], 500)
-//     }]);
-//
-//     //创建一个巡航器
-//     navg1 = pathSimplifierIns.createPathNavigator(0, //关联第1条轨迹
-//         {
-//             loop: true, //循环播放
-//             speed: 1000000,
-//             pathNavigatorStyle: {
-//                 autoRotate: true, //禁止调整方向
-//                 initRotateDegree : 0,
-//                 pathLinePassedStyle: null,
-//                 width: 24,
-//                 height: 24,
-//                 content: PathSimplifier.Render.Canvas.getImageContent('images/vessel.png', onload, onerror),
-//                 strokeStyle: null,
-//                 fillStyle: null
-//             }
-//         });
-//
-// }
+
+/**
+ * map function
+ */
+
+function createPathSimplifierIns(PathSimplifier) {
+    return new PathSimplifier({
+        zIndex: 100,
+        autoSetFitView: false,
+        map: map, //所属的地图实例
+        getPath: function (pathData, pathIndex) {
+            //返回轨迹数据中的节点坐标信息，[AMap.LngLat, AMap.LngLat...] 或者 [[lng|number,lat|number],...]
+            return pathData.path;
+        },
+        getHoverTitle: function (pathData, pathIndex, pointIndex) {
+            //返回鼠标悬停时显示的信息
+            if (pointIndex >= 0) {
+                //鼠标悬停在某个轨迹节点上
+                return pathData.name + '，点:' + pointIndex + '/' + pathData.path.length;
+            }
+            //鼠标悬停在节点之间的连线上
+            return pathData.name + '，点数量' + pathData.path.length;
+        },
+        renderOptions: {
+            //轨迹线的样式
+            pathLineStyle: {
+                strokeStyle: '#4acc11',
+                lineWidth: 6,
+                dirArrowStyle: true
+            }
+        }
+    });
+}
+
+function createNavigator(PathSimplifier, pathSimplifierIns, idx , speed) {
+    return pathSimplifierIns.createPathNavigator(idx, //关联第1条轨迹
+        {
+            loop: false, //循环播放
+            speed: speed,
+            pathNavigatorStyle: {
+                autoRotate: true, //禁止调整方向
+                width: 25,
+                height: 30,
+                // initRotateDegree: 90,
+                content: PathSimplifier.Render.Canvas.getImageContent(mapBaseUrl+'imgs/car.png', onload, onerror),
+                //经过路径的样式
+                pathLinePassedStyle: {
+                    lineWidth: 6,
+                    strokeStyle: 'black',
+                    dirArrowStyle: {
+                        stepSpace: 15,
+                        strokeStyle: 'red'
+                    }
+                }
+            }
+        });
+}
+
+
+/**
+ * set traffic
+ * @param pathSimplifierIns
+ * @param searchTimeData
+ * @param searchSpeedData
+ * @param esTime
+ * @param index
+ * @returns {*}
+ */
+function setTraffic(wagon) {
+    const Min = 0;
+    const Max = 100;
+    var idx = wagon.idx;
+    var rand = Min + Math.round(Math.random() * (Max - Min));
+    if (rand <= 50) {
+        wagon.stepSimplifierIns.getRenderOptions().pathLineStyle.strokeStyle = 'green';
+    }else{
+        wagon.timeout+= wagon.path.steps[idx].duration * 1;
+        wagon.path.steps[idx].duration *= 2;
+        wagon.stepSimplifierIns.getRenderOptions().pathLineStyle.strokeStyle = 'red';
+        $.toaster('Slow down due to the traffic jam', 'IoT-Wagon', 'danger');
+    }
+}
+
+
+function doExpand(wagon) {
+    if(wagon.navigator.getNaviStatus().toString() == 'pause' && wagon.navigator.isCursorAtPathEnd()) {
+        wagon.idx++;
+        if (wagon.idx == wagon.path.steps.length) {
+            return  'ARRIVAL';
+        }else if(wagon.idx <  wagon.path.steps.length){
+            if(wagon.idx % 10 == 0){
+                console.log("set traffic" + wagon.idx);
+                setTraffic(wagon);
+                if(wagon.timeout >= wagon.trafficThreshold){
+                    return "TRAFFIC";
+                }
+            }
+            return "NEXT_STEP";
+        }else{
+            console.log("已结束行驶，路径扩张定时器没关闭");
+        }
+    }
+
+    return 'DEFAULT';
+}
 
 

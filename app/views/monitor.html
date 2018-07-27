@@ -16,9 +16,9 @@
                 data-target="#mapConsole">
             <span class="glyphicon glyphicon-menu-hamburger"></span>
         </button>
-        <span class="navbar-text label label-default pull-left">当前成本</span></td>
+        <span class="navbar-text label label-default pull-left">Current Cost</span></td>
         <input type="text" class="navbar-text" id="currentCost" readonly="readonly" ng-model="currentCost">
-        <span class="navbar-text label label-default pull-left">初始成本</span></td>
+        <span class="navbar-text label label-default pull-left">Initial Cost</span></td>
         <input type="text" class="navbar-text" id="initialCost" readonly="readonly" ng-model="initialCost">
     </div>
     <div>
@@ -90,8 +90,8 @@
     </div><!-- /.modal -->
 </div>
 <div id="mapConsole" class="collapse pull-left">
-    <div class="panel-group" id="accordion" >
-        <div class="panel panel-default" >
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
             <div class="panel-heading">
                 <button type="button" class="btn btn-primary btn-block" data-toggle="collapse"
                         data-target="#collapseOne" data-parent="accordion">Supplier-Manager
@@ -139,9 +139,9 @@
                                        value="413362260"></td>
                         </tr>
                     </table>
-                    <button type="button" class="btn btn-primary pull-right" id = "dxyBtn"  data-toggle="collapse"
-                            data-target="#collapseTwo"   ng-click="setDxy()">
-                            OK
+                    <button type="button" class="btn btn-primary pull-right" id="dxyBtn" data-toggle="collapse"
+                            data-target="#collapseTwo" ng-click="setDxy()">
+                        OK
                     </button>
 
                 </div>
@@ -171,5 +171,107 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="panel panel-info costRatePanel"  ng-if = "costRatePanelShow == true" >
+    <div class="panel-heading">
+        <span class="panel-title pan"><strong>Decision-Making Benefits</strong></span>
+    </div>
+    <div class="panel-body" style = "margin-bottom:-30px">
+        <div>
+            <table class="table table-bordered" style="text-align: center;" ng-if = "policy == 'variable-destination'" >
+                <thead >
+                <tr>
+                    <th width="30%"  style="text-align: center;" ><strong>Event</strong></th>
+                    <td colspan="2" >{{eventType}}</td>
+                </tr>
+                <tr>
+                    <th width="30%"  style="text-align: center;" ><strong>Policy</strong></th>
+                    <td colspan="2">{{policy}}</td>
+                </tr>
+                <tr >
+                    <th  style="text-align: center;" >C0</th>
+                    <th  style="text-align: center;" >C1</th>
+                    <th  style="text-align: center;" >C2</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{C0}}</td>
+                    <td>{{C1}}</td>
+                    <td>{{C2}}</td>
+                </tr>
+
+                <tr>
+                    <th width="30%"><span class="label label-primary">1-(C1/C0)</span></th>
+                    <td colspan="2" id="C1C0">{{C1C0}}</td>
+                </tr>
+                <tr>
+                    <th width="30%"><span class="label label-danger">1-(C2/C1)</span></th>
+                    <td  colspan="2" id="C2C1" >{{C2C1}}</td>
+
+                </tr>
+                </tbody>
+                <tr>
+                    <th width="30%"><span class="label label-success">1-(C2/C0)</span></th>
+                    <td colspan="2" id="C2C0" >{{C2C0}}</td>
+                </tr>
+                <tbody>
+            </table>
+            <table class="table table-bordered" style="text-align: center;"  ng-if = "policy == 'fixed-destination'">
+                <thead >
+                <tr>
+                    <th width="30%"  style="text-align: center;" ><strong>Event</strong></th>
+                    <td colspan="2" >{{eventType}}</td>
+                </tr>
+                <tr>
+                    <th width="30%"  style="text-align: center;" ><strong>Policy</strong></th>
+                    <td colspan="2">{{policy}}</td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th width="30%"><span class="label label-danger">Risk Cost</span></th>
+                    <td colspan="2" ><lable type="text" id="riskCost">{{riskCost}}</lable></td>
+                </tr>
+                <tr>
+                    <th width="30%"><span class="label label-primary">Total Cost</span></th>
+                    <td colspan="2" ><lable type="text" id="totalCost">{{totalCost}}</lable> + <lable type="text" id = "addRiskCost">{{addRiskCost}}<label/></td>
+                </tr>
+                <tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel-footer pill-pane">
+    </div>
+</div>
+
+<div class="panel panel-info tipsPanel" ng-if = "costRatePanelShow == true">
+    <div class="panel-body" style = "margin-bottom:-30px">
+        <div>
+        <table class="table table-hover" style="text-align: center;" >
+            <tbody ng-if = "policy == 'variable-destination'">
+            <tr>
+                <th style="color: blue">1-(C1/C0)</th>
+                <td colspan="2">Before decision-making, benefits comparison before and after change.</td>
+            </tr>
+            <tr>
+                <th style="color: red">1-(C2/C1)</th>
+                <td  colspan="2"> After change，benefits comparison before and after decision making.</td>
+
+            </tr>
+            <tr>
+                <th style="color: green">1-(C2/C0)</th>
+                <td colspan="2">After decision-making, benefits comparison before and after change.</td>
+            </tr>
+            </tbody>
+            <tbody  ng-if = "policy == 'fixed-destination'">
+            <tr>
+                <th style="color: red;text-align: center">Comment</th>
+                <td colspan="2"  style="text-align: left;">If policy is fixed-destination, supplier might have a higher risk of penalty for missing delivery, but cheaper freight.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
     </div>
 </div>

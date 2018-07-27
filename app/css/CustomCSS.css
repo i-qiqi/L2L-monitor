@@ -40,4 +40,37 @@ body {
     margin-right: 30px;
     width:50px;
 }
+.costRatePanel {
+    position: absolute;
+    width: 25%;
+    height: auto;
+    bottom: 20%;
+    right: 8%;
+    z-index:9999;
+}
+.tipsPanel{
+    position: absolute;
+    width:45%;
+    height: auto;
+    bottom: 0.1%;
+    right: 1%;
+    z-index:9999;
+}
+.costRatePanel input {
+    /*border-radius: 5px;*/
+    /*margin: 5px;*/
+    /*border: none;*/
+    font-size: 10px;
+    /*width: 100px;*/
+    /*height: 30px;*/
+}
+.costRatePanel span {
+    /*margin: 5px;*/
+    /*border-radius: 5px;*/
+    /*border: none;*/
+    font-size: 5px;
+    /*width: 100px;*/
+    /*height: 20px;*/
+}
+
 
