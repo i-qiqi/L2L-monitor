@@ -29,7 +29,7 @@ git checkout lambda
     ![Alt text](app/images/webstorm_apply.png)
 ## WebSocket Configuration
 - you may need to modify the endpoint for WebSocket connection.
-    - `const vesselA_server` :  endpoint for vessel enterprise.
+    - `vesselA_server` :  endpoint for vessel enterprise.
     - `logisticA_server` :  endpoint for logistics enterprise.
     - `msc_server` :  endpoint for Manager Supplier Coordinator.
     - `vmc_server` : endpoint for Vessel Manager Coordinator.
