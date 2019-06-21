@@ -2,7 +2,7 @@
 <nav id="navbar" class="navbar navbar-transparent navbar-fixed-top ">
     <div class="container-fluid">
         <a class="navbar-brand pull-left" href="" disabled="disabled">
-            <img alt="Brand" style="margin-top:-4px;" id="logo" class="img-thumbnai" src="images/logo.png">
+            <img alt="Brand" style="margin-top:-4px;" id="logo" class="img-thumbnai" src="images/lab-logo.png">
         </a>
         <button type="button" id="start" class="btn btn-default navbar-btn pull-left" data-toggle="modal"
                 data-target="#startVesselModal">
@@ -64,26 +64,26 @@
                     &times;
                 </button>
                 <h4 class="modal-title" id="startVesselModalLabel">
-                    选择轮班
+                    Ship Selection
                 </h4>
             </div>
             <div class="modal-body">
                 <table class="table">
                     <tr>
-                        <td><span class="input-group-addon">船员:</span></td>
+                        <td><span class="input-group-addon">Sailor:</span></td>
                         <td><input id="sailor" class="form-control" ng-model="sailor"/></td>
                     </tr>
                     <tr>
-                        <td><span class="input-group-addon">船号:</span></td>
+                        <td><span class="input-group-addon">Ship Code:</span></td>
                         <td><input id="V_id" class="form-control" ng-model="vid"/></td>
                     </tr>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel
                 </button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="startVessel()">
-                    提交更改
+                    Submit
                 </button>
             </div>
         </div><!-- /.modal-content -->
@@ -187,7 +187,7 @@
                 </tr>
                 <tr>
                     <th width="30%"  style="text-align: center;" ><strong>Policy</strong></th>
-                    <td colspan="2">{{policy}}</td>
+                    <td colspan="2">pursuit-policy</td>
                 </tr>
                 <tr >
                     <th  style="text-align: center;" >C0</th>

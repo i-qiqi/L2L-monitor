@@ -247,7 +247,7 @@ function doExpand(wagon) {
             if(wagon.idx % 10 == 0){
                 console.log("set traffic" + wagon.idx);
                 setTraffic(wagon);
-                if(wagon.timeout >= wagon.trafficThreshold){
+                if(wagon.timeout >= wagon.trafficThreshold * 0.7){
                     return "TRAFFIC";
                 }
             }

@@ -1,6 +1,6 @@
-const vesselA_server = "http://ssp-vessel:9001/vessel-A/";
+const vesselA_server = "http://ssp-vessel:9001/";
 //logistic
-const logisticA_server = "http://ssp-logistics:9031/logistics-A/";
+const logisticA_server = "http://ssp-logistics:9031/";
 
 //device
 const zoomInVal = 500;

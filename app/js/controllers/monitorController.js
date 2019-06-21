@@ -423,7 +423,7 @@ angular.module('myApp.monitor')
 
 
                     /********************Route***********************/
-
+                    var accRate = 1.3; // 加速
                     var path = rendezvous.route;
                     var pathData = [];
                     for (var i = 0; i < path.steps.length; i++) {
@@ -463,7 +463,7 @@ angular.module('myApp.monitor')
                     var stepDistance = wagon.path.steps[wagon.idx].distance;
                     var stepDuration = wagon.path.steps[wagon.idx].duration;
                     var speed = stepDistance / stepDuration * 3.6 * zoomInVal;
-                    wagon.navigator = createNavigator(PathSimplifier, wagon.stepSimplifierIns, 0, speed);
+                    wagon.navigator = createNavigator(PathSimplifier, wagon.stepSimplifierIns, 0, speed*accRate);
                     wagon.navigator.start();
                     $.toaster('Wagon navigation begins!, destination：' + wagon.destination, 'IoT-Wagon', 'success');
 
@@ -532,7 +532,7 @@ angular.module('myApp.monitor')
                                 var stepDistance = wagon.path.steps[wagon.idx].distance;
                                 var stepDuration = wagon.path.steps[wagon.idx].duration;
                                 var speed = stepDistance / stepDuration * 3.6 * zoomInVal;
-                                wagon.navigator = createNavigator(PathSimplifier, wagon.stepSimplifierIns, 0, speed);
+                                wagon.navigator = createNavigator(PathSimplifier, wagon.stepSimplifierIns, 0, speed*accRate);
                                 wagon.navigator.start();
                                 break;
                             default :
